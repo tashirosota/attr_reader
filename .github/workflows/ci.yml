@@ -1,0 +1,27 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
+    strategy:
+      matrix:
+        otp: ['23.3.4.10', '24.2']
+        elixir: ['1.9.4', '1.13.2']
+    runs-on: ubuntu-latest
+    env:
+      MIX_ENV: test
+      MIX_TEST_PARTITION: 5
+    steps:
+      - uses: erlef/setup-beam@v1.8
+        with:
+          otp-version: ${{matrix.otp}}
+          elixir-version: ${{matrix.elixir}}
+      - uses: actions/checkout@v2
+      - run: mix deps.get
+      - run: mix compile
+      - run: mix format --check-formatted
+        if: matrix.elixir == '1.13.2'
+      - run: mix dialyzer
+        if: matrix.elixir == '1.13.2'
+      - run: mix test 
+        if: matrix.otp == '23.3.4.10'

@@ -1,0 +1,3 @@
+%{
+  "r_enum": {:hex, :r_enum, "0.7.0", "521377e5cf669460bb03c0017c8f7e316e8065abd3bc23a68cddbc11d28a3e6a", [:mix], [], "hexpm", "861a5dd6cdd55b5f37ead700fd19d38c9b544f747b800026a891d6cab554e0ed"},
+}
