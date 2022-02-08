@@ -6,7 +6,7 @@
 
 # AttrReader
 
-In elixir, Module variable is often used as a constant.
+In Elixir, Module variable is often used as a constant.
 But I didn't want to bother to define a getter when I wanted to refer to it with Test code etc.
 If you use AttrReader, you can use it without having to define the getter of the module attribute.
 
@@ -45,6 +45,7 @@ iex> UseAttrReader.bar()
 
 ```elixir
 iex> defmodule UseAttrReaderMacro do
+...>   require AttrReader
 ...>   AttrReader.define @foo
 ...>   AttrReader.define @bar, "bar"
 ...>   AttrReader.define @baz, :baz

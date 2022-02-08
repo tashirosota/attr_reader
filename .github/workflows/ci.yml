@@ -6,7 +6,7 @@ jobs:
     strategy:
       matrix:
         otp: ['23.3.4.10', '24.2']
-        elixir: ['1.10.4', '1.13.2']
+        elixir: ['1.12.3', '1.13.2']
     runs-on: ubuntu-latest
     env:
       MIX_ENV: test
@@ -19,9 +19,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: mix deps.get
       - run: mix compile
-      - run: mix format --check-formatted
-        if: matrix.elixir == '1.13.2'
-      - run: mix dialyzer
+      - run: mix format --check-formatted && mix dialyzer
         if: matrix.elixir == '1.13.2'
       - run: mix test 
-        if: matrix.otp == '23.3.4.10'
+        if: matrix.otp == '24.2'
