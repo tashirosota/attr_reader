@@ -25,7 +25,7 @@ end
 
 ## Usage
 
-### Defines by `user`
+### Defines by `use`
 
 ```elixir
 iex> defmodule UseAttrReader do
