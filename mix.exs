@@ -1,7 +1,7 @@
 defmodule AttrReader.MixProject do
   use Mix.Project
   @version "0.1.0"
-  @source_url "https://github.com/tashirosota/attr-reader"
+  @source_url "https://github.com/tashirosota/attr_reader"
   @description "Defines module attributes getter automatically like Ruby's attr_reader"
 
   def project do
