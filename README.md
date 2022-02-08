@@ -1,6 +1,14 @@
+<!-- @format -->
+
+[![hex.pm version](https://img.shields.io/hexpm/v/attr_reader.svg)](https://hex.pm/packages/attr_reader)
+[![CI](https://github.com/tashirosota/attr_reader/actions/workflows/ci.yml/badge.svg)](https://github.com/tashirosota/attr_reader/actions/workflows/ci.yml)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/tashirosota/attr_reader)
+
 # AttrReader
 
-**TODO: Add description**
+In elixir, Module variable is often used as a constant.
+But I didn't want to bother to define a getter when I wanted to refer to it with Test code etc.
+If you use AttrReader, you can use it without having to define the getter of the module attribute.
 
 ## Installation
 
@@ -15,8 +23,39 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/attr_reader>.
+## Usage
 
-# attr_reader
+### Defines by `user`
+
+```elixir
+iex> defmodule UseAttrReader do
+...>   @foo "foo"
+...>   use AttrReader
+...>   @bar :bar
+...> end
+
+iex> UseAttrReader.foo()
+"foo"
+
+iex> UseAttrReader.bar()
+:bar
+```
+
+### Defines by `macro`
+
+```elixir
+iex> defmodule UseAttrReaderMacro do
+...>   AttrReader.define @foo
+...>   AttrReader.define @bar, "bar"
+...>   AttrReader.define @baz, :baz
+...> end
+
+iex> UseAttrReader.foo()
+nil
+
+iex> UseAttrReader.bar()
+"bar"
+
+iex> UseAttrReader.baz()
+:baz
+```
