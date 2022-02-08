@@ -1,11 +1,12 @@
 defmodule AttrReader do
   @moduledoc """
-
+  Can define module attributes getter automatically.
   """
   @reserved_attributes Module.reserved_attributes() |> Map.keys()
 
   @doc """
-  Defines getters for all module custom attributes if used.
+  Defines getters for all custom module attributes if used.
+  And writes getter docs.
   ## Examples
       iex> defmodule UseAttrReaderForDoc do
       ...>   @foo "foo"
@@ -32,6 +33,12 @@ defmodule AttrReader do
     |> REnum.reject(&(&1 in @reserved_attributes))
     |> REnum.map(fn attribute ->
       quote do
+        @doc """
+        Gets @#{unquote(attribute)}.
+        ## Examples
+            iex> #{unquote(env.module)}.#{unquote(attribute)}()
+            #{unquote(Module.get_attribute(env.module, attribute))}
+        """
         def unquote(attribute)() do
           unquote(Module.get_attribute(env.module, attribute))
         end
@@ -41,6 +48,7 @@ defmodule AttrReader do
 
   @doc """
   Sets module attribute and defines getter.
+  And writes getter docs.
   ## Examples
       iex> defmodule AttrReaderMacroForDoc do
       ...>   AttrReader.define @foo
@@ -60,6 +68,12 @@ defmodule AttrReader do
 
     quote do
       @attar_value unquote(value)
+      @doc """
+      Gets @#{unquote(attr_key)}.
+      ## Examples
+          iex> #{unquote(__MODULE__)}.#{unquote(attr_key)}()
+          #{unquote(value)}
+      """
       def unquote(attr_key)() do
         @attar_value
       end
