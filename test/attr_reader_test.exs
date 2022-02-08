@@ -11,6 +11,7 @@ defmodule AttrReaderTest do
   defmodule UseAttrReaderMacro do
     AttrReader.define(@a)
     AttrReader.define(@b, :b_value)
+    AttrReader.define(@c, :c_value)
   end
 
   test "use" do
@@ -21,5 +22,9 @@ defmodule AttrReaderTest do
   test "attr_reader/2" do
     assert UseAttrReaderMacro.a() == nil
     assert UseAttrReaderMacro.b() == :b_value
+    assert UseAttrReaderMacro.c() == :c_value
+    assert UseAttrReaderMacro.a() == nil
+    assert UseAttrReaderMacro.b() == :b_value
+    assert UseAttrReaderMacro.c() == :c_value
   end
 end

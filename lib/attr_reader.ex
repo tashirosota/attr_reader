@@ -7,7 +7,7 @@ defmodule AttrReader do
   end
 
   defmacro __before_compile__(env) do
-    Module.attributes_in(env.module)
+    attributes_in(env.module)
     |> REnum.reject(&(&1 in @reserved_attributes))
     |> REnum.map(fn attribute ->
       quote do
@@ -23,10 +23,14 @@ defmodule AttrReader do
 
     quote do
       @attar_value unquote(value)
-
       def unquote(attr_key)() do
         @attar_value
       end
     end
+  end
+
+  defp attributes_in(module) when is_atom(module) do
+    {set, _} = :elixir_module.data_tables(module)
+    :ets.select(set, [{{:"$1", :_, :_}, [{:is_atom, :"$1"}], [:"$1"]}])
   end
 end
