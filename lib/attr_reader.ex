@@ -30,7 +30,6 @@ defmodule AttrReader do
     :vsn
   ]
 
-  @spec __using__(keyword) :: {:__block__, [], [{:@, [...], [...]}, ...]}
   @doc """
   Defines getters for all custom module attributes if used.
   And writes getter docs.
@@ -65,9 +64,6 @@ defmodule AttrReader do
       iex> UseAttrReaderForDoc.foo()
       ** (UndefinedFunctionError) function AttrReaderTest.UseAttrReaderForDoc.foo/0 is undefined or private
   """
-  @spec __using__(list()) ::
-          {:@, [{:context, AttrReader} | {:import, Kernel}, ...],
-           [{:before_compile, [...], [...]}, ...]}
   defmacro __using__(opts \\ []) do
     only = opts |> Keyword.get(:only)
     except = opts |> Keyword.get(:except)
@@ -123,7 +119,6 @@ defmodule AttrReader do
       iex> AttrReaderMacroForDoc.baz()
       :baz
   """
-  @spec define(tuple, any) :: {:__block__, [], [{:@, [...], [...]} | {:def, [...], [...]}, ...]}
   defmacro define(attribute, value \\ nil) do
     [first | _] = elem(attribute, 2)
     attr_key = first |> elem(0)

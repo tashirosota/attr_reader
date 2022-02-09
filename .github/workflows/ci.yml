@@ -6,7 +6,7 @@ jobs:
     strategy:
       matrix:
         otp: ['22.3.4.24', '24.2']
-        elixir: ['1.9.4', '1.13.2']
+        elixir: ['1.10.4', '1.13.2']
     runs-on: ubuntu-latest
     env:
       MIX_ENV: test

@@ -8,7 +8,7 @@ defmodule AttrReader.MixProject do
     [
       app: :attr_reader,
       version: @version,
-      elixir: "~> 1.9",
+      elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       description: @description,
       name: "AttrReader",
