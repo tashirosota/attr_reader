@@ -1,14 +1,14 @@
 defmodule AttrReader.MixProject do
   use Mix.Project
-  @version "0.1.0"
-  @source_url "https://github.com/tashirosota/attr-reader"
+  @version "0.2.0"
+  @source_url "https://github.com/tashirosota/attr_reader"
   @description "Defines module attributes getter automatically like Ruby's attr_reader"
 
   def project do
     [
       app: :attr_reader,
       version: @version,
-      elixir: "~> 1.12",
+      elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       description: @description,
       name: "AttrReader",
@@ -41,7 +41,6 @@ defmodule AttrReader.MixProject do
 
   defp deps do
     [
-      {:r_enum, "~> 0.7.0"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]

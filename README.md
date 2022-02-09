@@ -25,7 +25,7 @@ end
 
 ## Usage
 
-### Defines by `user`
+### Defines by `use`
 
 ```elixir
 iex> defmodule UseAttrReader do
@@ -39,6 +39,38 @@ iex> UseAttrReader.foo()
 
 iex> UseAttrReader.bar()
 :bar
+```
+
+**with except**
+
+```elixir
+iex> defmodule UseAttrReader do
+...>   @foo "foo"
+...>   use AttrReader, except: [:foo]
+...>   @bar :bar
+...> end
+
+iex> UseAttrReader.bar()
+:bar
+
+iex> UseAttrReader.foo()
+** (UndefinedFunctionError)
+```
+
+**with only**
+
+```elixir
+iex> defmodule UseAttrReader do
+...>   @foo "foo"
+...>   use AttrReader, only: [:foo]
+...>   @bar :bar
+...> end
+
+iex> UseAttrReader.foo()
+"foo"
+
+iex> UseAttrReader.bar()
+** (UndefinedFunctionError)
 ```
 
 ### Defines by `macro`
