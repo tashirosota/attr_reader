@@ -30,6 +30,7 @@ defmodule AttrReader do
     :vsn
   ]
 
+  @spec __using__(keyword) :: {:__block__, [], [{:@, [...], [...]}, ...]}
   @doc """
   Defines getters for all custom module attributes if used.
   And writes getter docs.
@@ -44,26 +45,40 @@ defmodule AttrReader do
       iex> UseAttrReaderForDoc.bar()
       :bar
   """
-  @spec __using__(any) ::
+  @spec __using__(list()) ::
           {:@, [{:context, AttrReader} | {:import, Kernel}, ...],
            [{:before_compile, [...], [...]}, ...]}
-  defmacro __using__(_opts \\ nil) do
+  defmacro __using__(opts \\ []) do
+    only = opts |> Keyword.get(:only)
+    except = opts |> Keyword.get(:except)
+
     quote do
+      @before_compile_opts [only: unquote(only), except: unquote(except)]
       @before_compile AttrReader
     end
   end
 
-  @spec __before_compile__(atom | %{:module => atom, optional(any) => any}) :: list
   defmacro __before_compile__(env) do
-    attributes_in(env.module)
-    |> Enum.reject(&(&1 in @reserved_attributes))
+    opts = Module.get_attribute(env.module, :before_compile_opts)
+    only = opts |> Keyword.get(:only)
+    except = opts |> Keyword.get(:except)
+
+    attributes =
+      attributes_in(env.module)
+      |> Enum.reject(&(&1 in (@reserved_attributes ++ [:before_compile_opts])))
+
+    cond do
+      only -> attributes |> Enum.filter(&(&1 in only))
+      except -> attributes |> Enum.reject(&(&1 in except))
+      true -> attributes
+    end
     |> Enum.map(fn attribute ->
       quote do
         @doc """
         Gets @#{unquote(attribute)}.
         ## Examples
             iex> #{unquote(env.module)}.#{unquote(attribute)}()
-            #{unquote(Module.get_attribute(env.module, attribute))}
+            #{unquote(Module.get_attribute(env.module, attribute)) |> inspect()}
         """
         def unquote(attribute)() do
           unquote(Module.get_attribute(env.module, attribute))
@@ -99,7 +114,7 @@ defmodule AttrReader do
       Gets @#{unquote(attr_key)}.
       ## Examples
           iex> #{unquote(__MODULE__)}.#{unquote(attr_key)}()
-          #{unquote(value)}
+          #{unquote(value) |> inspect()}
       """
       def unquote(attr_key)() do
         @attar_value
