@@ -2,7 +2,33 @@ defmodule AttrReader do
   @moduledoc """
   Can define module attributes getter automatically.
   """
-  @reserved_attributes Module.reserved_attributes() |> Map.keys()
+  # TODO: 1.20.0　 ~ Module.reserved_attributes()に切り替え
+  @reserved_attributes [
+    :after_compile,
+    :before_compile,
+    :behaviour,
+    :callback,
+    :compile,
+    :deprecated,
+    :derive,
+    :dialyzer,
+    :doc,
+    :enforce_keys,
+    :external_resource,
+    :file,
+    :impl,
+    :macrocallback,
+    :moduledoc,
+    :on_definition,
+    :on_load,
+    :opaque,
+    :optional_callbacks,
+    :spec,
+    :type,
+    :typedoc,
+    :typep,
+    :vsn
+  ]
 
   @doc """
   Defines getters for all custom module attributes if used.
