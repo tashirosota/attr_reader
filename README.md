@@ -41,6 +41,38 @@ iex> UseAttrReader.bar()
 :bar
 ```
 
+**with except**
+
+```elixir
+iex> defmodule UseAttrReader do
+...>   @foo "foo"
+...>   use AttrReader, except: [:foo]
+...>   @bar :bar
+...> end
+
+iex> UseAttrReader.bar()
+:bar
+
+iex> UseAttrReader.foo()
+** (UndefinedFunctionError)
+```
+
+**with only**
+
+```elixir
+iex> defmodule UseAttrReader do
+...>   @foo "foo"
+...>   use AttrReader, only: [:foo]
+...>   @bar :bar
+...> end
+
+iex> UseAttrReader.foo()
+"foo"
+
+iex> UseAttrReader.bar()
+** (UndefinedFunctionError)
+```
+
 ### Defines by `macro`
 
 ```elixir

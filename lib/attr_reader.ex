@@ -44,6 +44,26 @@ defmodule AttrReader do
       "foo"
       iex> UseAttrReaderForDoc.bar()
       :bar
+
+      iex> defmodule UseAttrReaderForDoc do
+      ...>   @foo "foo"
+      ...>   use AttrReader, only: [:foo]
+      ...>   @bar :bar
+      ...> end
+      iex> UseAttrReaderForDoc.foo()
+      "foo"
+      iex> UseAttrReaderForDoc.bar()
+      ** (UndefinedFunctionError) function AttrReaderTest.UseAttrReaderForDoc.bar/0 is undefined or private
+
+      iex> defmodule UseAttrReaderForDoc do
+      ...>   @foo "foo"
+      ...>   use AttrReader, except: [:foo]
+      ...>   @bar :bar
+      ...> end
+      iex> UseAttrReaderForDoc.bar()
+      :bar
+      iex> UseAttrReaderForDoc.foo()
+      ** (UndefinedFunctionError) function AttrReaderTest.UseAttrReaderForDoc.foo/0 is undefined or private
   """
   @spec __using__(list()) ::
           {:@, [{:context, AttrReader} | {:import, Kernel}, ...],
