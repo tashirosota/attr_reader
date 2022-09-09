@@ -5,19 +5,20 @@ jobs:
     name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
     strategy:
       matrix:
-        otp: ['22.3.4.24', '24.2']
-        elixir: ['1.10.4', '1.13.2']
+        elixir: ['1.14.x', '1.15.x']
+        otp: ['25.x', '26.x']
     runs-on: ubuntu-latest
     env:
       MIX_ENV: test
       MIX_TEST_PARTITION: 5
     steps:
-      - uses: erlef/setup-beam@v1.8
+      - uses: erlef/setup-beam@v1
         with:
           otp-version: ${{matrix.otp}}
           elixir-version: ${{matrix.elixir}}
       - uses: actions/checkout@v2
       - run: mix deps.get
-      - run: mix compile
+      - run: mix compile --warnings-as-errors
       - run: mix format --check-formatted && mix dialyzer
+        if: matrix.elixir == '1.15.x'
       - run: mix test 
