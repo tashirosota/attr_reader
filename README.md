@@ -18,7 +18,7 @@ by adding `attr_reader` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:attr_reader, "~> 0.7.0"}
+    {:attr_reader, "~> 0.2"}
   ]
 end
 ```
