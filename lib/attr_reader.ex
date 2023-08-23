@@ -2,33 +2,6 @@ defmodule AttrReader do
   @moduledoc """
   Can define module attributes getter automatically.
   """
-  # TODO: 1.20.0　 ~ Module.reserved_attributes()に切り替え
-  @reserved_attributes [
-    :after_compile,
-    :before_compile,
-    :behaviour,
-    :callback,
-    :compile,
-    :deprecated,
-    :derive,
-    :dialyzer,
-    :doc,
-    :enforce_keys,
-    :external_resource,
-    :file,
-    :impl,
-    :macrocallback,
-    :moduledoc,
-    :on_definition,
-    :on_load,
-    :opaque,
-    :optional_callbacks,
-    :spec,
-    :type,
-    :typedoc,
-    :typep,
-    :vsn
-  ]
 
   @doc """
   Defines getters for all custom module attributes if used.
@@ -80,8 +53,8 @@ defmodule AttrReader do
     except = opts |> Keyword.get(:except)
 
     attributes =
-      attributes_in(env.module)
-      |> Enum.reject(&(&1 in (@reserved_attributes ++ [:before_compile_opts])))
+      Module.attributes_in(env.module)
+      |> Enum.reject(&(&1 in (Map.keys(Module.reserved_attributes()) ++ [:before_compile_opts])))
 
     cond do
       only -> attributes |> Enum.filter(&(&1 in only))
@@ -135,10 +108,5 @@ defmodule AttrReader do
         @attar_value
       end
     end
-  end
-
-  defp attributes_in(module) when is_atom(module) do
-    {set, _} = :elixir_module.data_tables(module)
-    :ets.select(set, [{{:"$1", :_, :_}, [{:is_atom, :"$1"}], [:"$1"]}])
   end
 end
